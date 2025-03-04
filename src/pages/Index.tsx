@@ -26,11 +26,11 @@ const Index = () => {
     <Layout>
       <div className="h-full flex flex-col p-4 gap-4 overflow-hidden">
         <div className="h-full flex flex-col lg:flex-row gap-4">
-          {/* Main chat section - now takes most of the screen */}
+          {/* Main chat section - takes most of the screen */}
           <div className="lg:w-3/4 flex flex-col h-full">
             <div className="mb-4">
-              <h2 className="text-2xl font-bold">Building Your Marketing Story</h2>
-              <p className="text-muted-foreground">Collaborate with our AI team to create compelling marketing campaigns</p>
+              <h2 className="text-2xl font-bold">Unleash Your Brand's Potential</h2>
+              <p className="text-muted-foreground">Collaborate with our AI creative team to craft compelling marketing campaigns</p>
             </div>
             <AgentChat 
               agents={activeAgents}

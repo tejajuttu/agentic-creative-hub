@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Send, Loader2, MapPin, Calendar, DollarSign, Clock } from "lucide-react";
+import { Send, Loader2, Target, Lightbulb, BarChart, Users } from "lucide-react";
 import { Agent } from "./AgentSelector";
 
 interface Message {
@@ -27,11 +27,11 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      content: "Hello! I'm your travel planning team. Where would you like to go? Tell me about your dream destination, and I'll help you plan the perfect trip.",
+      content: "Welcome to your marketing creative studio! I'm here with my team to help you develop compelling marketing campaigns. What kind of campaign are you looking to create today?",
       sender: {
         id: "system",
-        name: "Travel Team",
-        avatar: "T",
+        name: "Marketing Team",
+        avatar: "M",
         role: "Assistant",
       },
       timestamp: new Date(),
@@ -86,7 +86,7 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
         setTimeout(() => {
           const agentResponse: Message = {
             id: `${Date.now()}-${agent.id}`,
-            content: getTravelAgentResponse(agent.id, inputValue),
+            content: getMarketingAgentResponse(agent.id, inputValue),
             sender: {
               id: agent.id,
               name: agent.name,
@@ -106,21 +106,25 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
     }
   };
 
-  // Placeholder responses based on agent type for travel planning
-  const getTravelAgentResponse = (agentId: string, userInput: string) => {
+  // Placeholder responses based on agent type for marketing assistance
+  const getMarketingAgentResponse = (agentId: string, userInput: string) => {
     switch (agentId) {
-      case "planner":
-        return "I'll create a comprehensive itinerary based on your preferences. Would you like to focus more on cultural sites, natural attractions, or culinary experiences?";
-      case "critic":
-        return "I'll evaluate the proposed travel plans and suggest improvements to ensure you have the best experience possible.";
-      case "researcher":
-        return "I've researched the local attractions, and can recommend some hidden gems that tourists often miss. Would you like to hear about them?";
-      case "documenter":
-        return "I can prepare a detailed travel guide with all the necessary information, including visa requirements, local customs, and emergency contacts.";
-      case "budget":
-        return "Based on current rates, I've calculated an estimated budget for your trip. Would you like me to suggest ways to optimize your spending?";
+      case "manager":
+        return "I'll coordinate our team to create an integrated marketing campaign based on your requirements. What's your target audience and primary objective?";
+      case "writer":
+        return "I can draft compelling copy for this campaign. Would you prefer a casual, professional, or inspirational tone for the messaging?";
+      case "editor":
+        return "I'll review all written content to ensure it aligns with brand voice and marketing objectives while maintaining clarity and impact.";
+      case "illustrator":
+        return "I can create visuals that complement the messaging. What style of imagery would resonate best with your audience - modern, classic, abstract?";
+      case "audio":
+        return "For audio elements, I can suggest background music or voice-over styles that would enhance your message. Any preferences on tone or style?";
+      case "video":
+        return "I can help storyboard and produce video content that brings your marketing vision to life. What duration and format works best for your channels?";
+      case "approver":
+        return "I'll ensure all content meets brand guidelines and marketing objectives before finalizing. Let me know if you have specific compliance requirements.";
       default:
-        return "I'm here to help with your travel planning needs.";
+        return "I'm here to help with your marketing campaign. What specific aspects would you like assistance with?";
     }
   };
 
@@ -143,19 +147,19 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
       className
     )}>
       <div className="px-6 py-4 border-b border-border/50 bg-secondary/30">
-        <h2 className="font-semibold text-lg">Travel Planning Assistant</h2>
+        <h2 className="font-semibold text-lg">Creative Marketing Studio</h2>
         <div className="flex gap-4 mt-2">
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <MapPin className="h-3.5 w-3.5" /> Any destination
+            <Target className="h-3.5 w-3.5" /> Targeted Campaigns
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Calendar className="h-3.5 w-3.5" /> Flexible dates
+            <Lightbulb className="h-3.5 w-3.5" /> Creative Concepts
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <DollarSign className="h-3.5 w-3.5" /> Custom budget
+            <BarChart className="h-3.5 w-3.5" /> Performance Analytics
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Clock className="h-3.5 w-3.5" /> Real-time planning
+            <Users className="h-3.5 w-3.5" /> Audience Insights
           </div>
         </div>
       </div>
@@ -225,7 +229,7 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
         <div className="flex items-center gap-3">
           <input
             type="text"
-            placeholder="Describe your ideal travel destination..."
+            placeholder="Describe your marketing campaign needs..."
             className="flex-1 bg-secondary/30 rounded-full px-5 py-3 text-sm border border-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/20"
             value={inputValue}
             onChange={handleInputChange}

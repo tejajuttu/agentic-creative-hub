@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Check, Users } from "lucide-react";
+import { Check, Users, Briefcase, Pen, Image, Headphones, Video, FileCheck } from "lucide-react";
 
 // Define the agent types and their roles
 export interface Agent {
@@ -11,49 +11,73 @@ export interface Agent {
   avatar: string;
   description: string;
   active: boolean;
+  removable: boolean;
 }
 
-// Initial agents setup with travel agents
+// Initial agents setup with marketing agents
 const defaultAgents: Agent[] = [
   {
-    id: "planner",
-    name: "Travel Planner",
-    role: "Planner",
-    avatar: "P",
-    description: "Plans comprehensive travel itineraries",
+    id: "manager",
+    name: "Campaign Manager",
+    role: "Manager",
+    avatar: "M",
+    description: "Oversees strategy and coordinates team efforts",
     active: true,
+    removable: false,
   },
   {
-    id: "critic",
-    name: "Travel Critic",
-    role: "Critic",
-    avatar: "C",
-    description: "Reviews and critiques travel plans",
+    id: "writer",
+    name: "Copywriter",
+    role: "Writer",
+    avatar: "W",
+    description: "Creates compelling marketing copy and messaging",
     active: true,
+    removable: true,
   },
   {
-    id: "researcher",
-    name: "Local Expert",
-    role: "Expert",
+    id: "editor",
+    name: "Content Editor",
+    role: "Editor",
     avatar: "E",
-    description: "Provides local insights and recommendations",
+    description: "Refines and polishes written content",
     active: true,
+    removable: true,
   },
   {
-    id: "documenter",
-    name: "Documentation",
-    role: "Docs",
-    avatar: "D",
-    description: "Creates travel documentation and guides",
+    id: "illustrator",
+    name: "Visual Designer",
+    role: "Illustrator",
+    avatar: "I",
+    description: "Creates engaging visual assets and graphics",
     active: true,
+    removable: true,
   },
   {
-    id: "budget",
-    name: "Budget Analyst",
-    role: "Budget",
-    avatar: "B",
-    description: "Optimizes travel costs and budgeting",
+    id: "audio",
+    name: "Audio Producer",
+    role: "Audio",
+    avatar: "A",
+    description: "Crafts sound effects and audio elements",
     active: false,
+    removable: true,
+  },
+  {
+    id: "video",
+    name: "Video Director",
+    role: "Video",
+    avatar: "V",
+    description: "Produces and edits video content",
+    active: false,
+    removable: true,
+  },
+  {
+    id: "approver",
+    name: "Brand Guardian",
+    role: "Approver",
+    avatar: "G",
+    description: "Ensures content meets brand guidelines",
+    active: false,
+    removable: true,
   },
 ];
 
@@ -68,6 +92,13 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
 
   // Toggle agent activity
   const toggleAgent = (id: string) => {
+    const agentToToggle = agents.find(agent => agent.id === id);
+    
+    // Prevent toggling the manager if it's not removable
+    if (agentToToggle && !agentToToggle.removable && agentToToggle.active) {
+      return;
+    }
+    
     const updatedAgents = agents.map(agent =>
       agent.id === id ? { ...agent, active: !agent.active } : agent
     );
@@ -81,6 +112,28 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
   // Get the count of active agents
   const activeCount = agents.filter(agent => agent.active).length;
 
+  // Get icon for agent role
+  const getAgentIcon = (id: string) => {
+    switch (id) {
+      case "manager":
+        return <Briefcase className="h-3.5 w-3.5 text-primary" />;
+      case "writer":
+        return <Pen className="h-3.5 w-3.5 text-primary" />;
+      case "editor":
+        return <FileCheck className="h-3.5 w-3.5 text-primary" />;
+      case "illustrator":
+        return <Image className="h-3.5 w-3.5 text-primary" />;
+      case "audio":
+        return <Headphones className="h-3.5 w-3.5 text-primary" />;
+      case "video":
+        return <Video className="h-3.5 w-3.5 text-primary" />;
+      case "approver":
+        return <Check className="h-3.5 w-3.5 text-primary" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={cn(
       "flex flex-col rounded-lg border border-primary/20 overflow-hidden bg-card shadow-lg", 
@@ -92,7 +145,7 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
       >
         <div className="flex items-center space-x-2">
           <Users className="h-5 w-5 text-primary" />
-          <span className="font-medium">Travel AI Team</span>
+          <span className="font-medium">Marketing AI Team</span>
           <div className="rounded-full bg-primary text-primary-foreground text-xs py-0.5 px-2 font-medium">
             {activeCount} active
           </div>
@@ -107,7 +160,10 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
           {agents.map((agent) => (
             <div
               key={agent.id}
-              className="flex items-center justify-between p-2 rounded-md hover:bg-muted/30 transition-colors my-1 cursor-pointer"
+              className={cn(
+                "flex items-center justify-between p-2 rounded-md hover:bg-muted/30 transition-colors my-1 cursor-pointer",
+                !agent.removable && agent.active && "opacity-90 cursor-not-allowed"
+              )}
               onClick={() => toggleAgent(agent.id)}
             >
               <div className="flex items-center space-x-3">
@@ -125,7 +181,8 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
               
               <div className={cn(
                 "w-5 h-5 rounded-sm flex items-center justify-center transition-colors",
-                agent.active ? "bg-primary text-primary-foreground" : "border border-muted-foreground/30"
+                agent.active ? "bg-primary text-primary-foreground" : "border border-muted-foreground/30",
+                !agent.removable && agent.active && "opacity-90"
               )}>
                 {agent.active && <Check className="h-3 w-3" />}
               </div>
