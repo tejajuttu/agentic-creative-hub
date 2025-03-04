@@ -13,46 +13,46 @@ export interface Agent {
   active: boolean;
 }
 
-// Initial agents setup
+// Initial agents setup with travel agents
 const defaultAgents: Agent[] = [
   {
-    id: "writer",
-    name: "Copywriter",
-    role: "Writer",
-    avatar: "W",
-    description: "Creates compelling marketing copy and scripts",
+    id: "planner",
+    name: "Travel Planner",
+    role: "Planner",
+    avatar: "P",
+    description: "Plans comprehensive travel itineraries",
     active: true,
   },
   {
-    id: "illustrator",
-    name: "Illustrator",
-    role: "Designer",
-    avatar: "I",
-    description: "Generates images and visual assets",
+    id: "critic",
+    name: "Travel Critic",
+    role: "Critic",
+    avatar: "C",
+    description: "Reviews and critiques travel plans",
     active: true,
   },
   {
-    id: "audio",
-    name: "Audio Producer",
-    role: "Audio",
-    avatar: "A",
-    description: "Creates background music and sound effects",
+    id: "researcher",
+    name: "Local Expert",
+    role: "Expert",
+    avatar: "E",
+    description: "Provides local insights and recommendations",
     active: true,
   },
   {
-    id: "movie",
-    name: "Video Editor",
-    role: "Editor",
-    avatar: "V",
-    description: "Composes final video from assets",
+    id: "documenter",
+    name: "Documentation",
+    role: "Docs",
+    avatar: "D",
+    description: "Creates travel documentation and guides",
     active: true,
   },
   {
-    id: "strategist",
-    name: "Strategist",
-    role: "Strategy",
-    avatar: "S",
-    description: "Plans marketing strategy and approach",
+    id: "budget",
+    name: "Budget Analyst",
+    role: "Budget",
+    avatar: "B",
+    description: "Optimizes travel costs and budgeting",
     active: false,
   },
 ];
@@ -64,7 +64,7 @@ interface AgentSelectorProps {
 
 export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps) => {
   const [agents, setAgents] = useState<Agent[]>(defaultAgents);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   // Toggle agent activity
   const toggleAgent = (id: string) => {
@@ -82,15 +82,18 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
   const activeCount = agents.filter(agent => agent.active).length;
 
   return (
-    <div className={cn("flex flex-col rounded-lg border border-border/50 overflow-hidden bg-card shadow-subtle", className)}>
+    <div className={cn(
+      "flex flex-col rounded-lg border border-primary/20 overflow-hidden bg-card shadow-lg", 
+      className
+    )}>
       <div 
-        className="p-3 flex items-center justify-between cursor-pointer hover:bg-muted/30 transition-colors"
+        className="p-3 flex items-center justify-between cursor-pointer hover:bg-muted/30 transition-colors bg-secondary/30"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center space-x-2">
-          <Users className="h-4 w-4 text-primary" />
-          <span className="font-medium text-sm">AI Team Members</span>
-          <div className="rounded-full bg-primary/10 text-primary text-xs py-0.5 px-2">
+          <Users className="h-5 w-5 text-primary" />
+          <span className="font-medium">Travel AI Team</span>
+          <div className="rounded-full bg-primary text-primary-foreground text-xs py-0.5 px-2 font-medium">
             {activeCount} active
           </div>
         </div>
@@ -100,7 +103,7 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
       </div>
       
       {isExpanded && (
-        <div className="px-2 py-1 animate-fade-in">
+        <div className="px-2 py-1 animate-fade-in max-h-[300px] overflow-y-auto">
           {agents.map((agent) => (
             <div
               key={agent.id}
@@ -110,7 +113,7 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
               <div className="flex items-center space-x-3">
                 <div className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium",
-                  agent.active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                  agent.active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                 )}>
                   {agent.avatar}
                 </div>
@@ -121,8 +124,8 @@ export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps)
               </div>
               
               <div className={cn(
-                "w-4 h-4 rounded flex items-center justify-center transition-colors",
-                agent.active ? "bg-primary text-white" : "border border-muted-foreground/30"
+                "w-5 h-5 rounded-sm flex items-center justify-center transition-colors",
+                agent.active ? "bg-primary text-primary-foreground" : "border border-muted-foreground/30"
               )}>
                 {agent.active && <Check className="h-3 w-3" />}
               </div>

@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, MapPin, Calendar, DollarSign, Clock } from "lucide-react";
 import { Agent } from "./AgentSelector";
 
 interface Message {
@@ -27,11 +27,11 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      content: "Hello! I'm your marketing team. What kind of advertisement would you like us to create today?",
+      content: "Hello! I'm your travel planning team. Where would you like to go? Tell me about your dream destination, and I'll help you plan the perfect trip.",
       sender: {
         id: "system",
-        name: "Marketing Team",
-        avatar: "M",
+        name: "Travel Team",
+        avatar: "T",
         role: "Assistant",
       },
       timestamp: new Date(),
@@ -86,7 +86,7 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
         setTimeout(() => {
           const agentResponse: Message = {
             id: `${Date.now()}-${agent.id}`,
-            content: getAgentResponse(agent.id, inputValue),
+            content: getTravelAgentResponse(agent.id, inputValue),
             sender: {
               id: agent.id,
               name: agent.name,
@@ -106,21 +106,21 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
     }
   };
 
-  // Placeholder responses based on agent type
-  const getAgentResponse = (agentId: string, userInput: string) => {
+  // Placeholder responses based on agent type for travel planning
+  const getTravelAgentResponse = (agentId: string, userInput: string) => {
     switch (agentId) {
-      case "writer":
-        return "I'll craft compelling copy for this advertisement that resonates with your target audience.";
-      case "illustrator":
-        return "I'll generate visuals that align with the marketing message and brand aesthetic.";
-      case "audio":
-        return "I can create a soundtrack that enhances the emotional impact of your advertisement.";
-      case "movie":
-        return "I'll compile all assets into a cohesive video advertisement optimized for engagement.";
-      case "strategist":
-        return "Based on market analysis, I recommend focusing on these key value propositions in your campaign.";
+      case "planner":
+        return "I'll create a comprehensive itinerary based on your preferences. Would you like to focus more on cultural sites, natural attractions, or culinary experiences?";
+      case "critic":
+        return "I'll evaluate the proposed travel plans and suggest improvements to ensure you have the best experience possible.";
+      case "researcher":
+        return "I've researched the local attractions, and can recommend some hidden gems that tourists often miss. Would you like to hear about them?";
+      case "documenter":
+        return "I can prepare a detailed travel guide with all the necessary information, including visa requirements, local customs, and emergency contacts.";
+      case "budget":
+        return "Based on current rates, I've calculated an estimated budget for your trip. Would you like me to suggest ways to optimize your spending?";
       default:
-        return "I'm here to help with your marketing needs.";
+        return "I'm here to help with your travel planning needs.";
     }
   };
 
@@ -138,12 +138,29 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
   };
 
   return (
-    <div className={cn("flex flex-col h-full border border-border/50 rounded-lg overflow-hidden bg-card shadow-subtle", className)}>
-      <div className="px-4 py-3 border-b border-border/50 bg-muted/30">
-        <h2 className="font-medium">Chat with Your Marketing Team</h2>
+    <div className={cn(
+      "flex flex-col h-full border border-primary/20 rounded-lg overflow-hidden bg-card shadow-lg", 
+      className
+    )}>
+      <div className="px-6 py-4 border-b border-border/50 bg-secondary/30">
+        <h2 className="font-semibold text-lg">Travel Planning Assistant</h2>
+        <div className="flex gap-4 mt-2">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <MapPin className="h-3.5 w-3.5" /> Any destination
+          </div>
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Calendar className="h-3.5 w-3.5" /> Flexible dates
+          </div>
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <DollarSign className="h-3.5 w-3.5" /> Custom budget
+          </div>
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Clock className="h-3.5 w-3.5" /> Real-time planning
+          </div>
+        </div>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {messages.map((message) => (
           <div 
             key={message.id}
@@ -154,30 +171,30 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
           >
             {message.sender.id !== "user" && (
               <div className={cn(
-                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium",
-                "bg-primary/10 text-primary"
+                "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium",
+                "bg-primary text-primary-foreground"
               )}>
                 {message.sender.avatar}
               </div>
             )}
             
             <div className={cn(
-              "max-w-[80%] rounded-lg px-4 py-2",
+              "max-w-[80%] rounded-lg px-5 py-3",
               message.sender.id === "user" 
                 ? "bg-primary text-primary-foreground" 
                 : "bg-secondary text-secondary-foreground"
             )}>
               {message.sender.id !== "user" && (
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-medium text-xs">{message.sender.name}</span>
-                  <span className="text-xs text-muted-foreground/70">{message.sender.role}</span>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="font-semibold text-sm">{message.sender.name}</span>
+                  <span className="text-xs text-muted-foreground/80 bg-secondary/80 px-2 py-0.5 rounded-full">{message.sender.role}</span>
                 </div>
               )}
               <div className="text-sm">{message.content}</div>
             </div>
             
             {message.sender.id === "user" && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
                 {message.sender.avatar}
               </div>
             )}
@@ -186,13 +203,13 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
         
         {isLoading && (
           <div className="flex items-start gap-3 message-in">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
-              <Loader2 className="h-4 w-4 animate-spin" />
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+              <Loader2 className="h-5 w-5 animate-spin" />
             </div>
-            <div className="bg-secondary text-secondary-foreground rounded-lg px-4 py-2">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-medium text-xs">AI Team</span>
-                <span className="text-xs text-muted-foreground/70">thinking</span>
+            <div className="bg-secondary text-secondary-foreground rounded-lg px-5 py-3">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="font-semibold text-sm">AI Team</span>
+                <span className="text-xs text-muted-foreground/80 bg-secondary/80 px-2 py-0.5 rounded-full">thinking</span>
               </div>
               <div className="text-sm thinking">
                 <span>.</span><span>.</span><span>.</span>
@@ -204,19 +221,19 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="px-4 py-3 border-t border-border/50">
-        <div className="flex items-center gap-2">
+      <div className="px-6 py-4 border-t border-border/50 bg-card">
+        <div className="flex items-center gap-3">
           <input
             type="text"
-            placeholder="Type your message..."
-            className="flex-1 bg-background rounded-md px-3 py-2 text-sm border border-input focus:outline-none focus:ring-2 focus:ring-primary/20"
+            placeholder="Describe your ideal travel destination..."
+            className="flex-1 bg-secondary/30 rounded-full px-5 py-3 text-sm border border-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/20"
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
           />
           <button
             className={cn(
-              "rounded-md p-2 transition-colors",
+              "rounded-full p-3 transition-colors",
               inputValue.trim() 
                 ? "bg-primary text-primary-foreground hover:bg-primary/90" 
                 : "bg-muted text-muted-foreground"
@@ -224,7 +241,7 @@ export const AgentChat = ({ agents, className, onSendMessage }: AgentChatProps) 
             onClick={handleSendMessage}
             disabled={!inputValue.trim()}
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           </button>
         </div>
       </div>
