@@ -13,11 +13,14 @@ export interface Message {
 }
 
 export type MarketingAgentId = 
-  | "manager" 
-  | "writer" 
-  | "editor" 
-  | "illustrator" 
-  | "audio" 
-  | "video" 
-  | "approver" 
+  | "industry"
+  | "regulations"
+  | "competitor"
+  | "consumer"
+  | "strategy"
+  | "writer"
+  | "editor"
+  | "illustrator"
+  | "voice"
+  | "animator"
   | "system";

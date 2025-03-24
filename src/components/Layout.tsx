@@ -1,7 +1,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { UserRound } from "lucide-react";
+import { UserRound, Brain } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,16 +14,16 @@ export const Layout = ({ children, className }: LayoutProps) => {
       <header className="h-16 border-b border-border/40 px-6 flex items-center justify-between bg-background/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center">
-            <div className="w-5 h-5 rounded-sm bg-background"></div>
+            <Brain className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold">EY Creative Studio</h1>
-            <p className="text-xs text-muted-foreground">AI-powered marketing solutions</p>
+            <h1 className="text-xl font-semibold">Agentic AI Studio</h1>
+            <p className="text-xs text-muted-foreground">AI-powered research & creative solutions</p>
           </div>
         </div>
         <div className="flex items-center space-x-3">
           <div className="text-sm px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium">
-            Marketing Suite
+            AI Assistant
           </div>
         </div>
       </header>
