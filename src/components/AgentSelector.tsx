@@ -128,7 +128,7 @@ interface AgentSelectorProps {
 export const AgentSelector = ({ onAgentsChange, className }: AgentSelectorProps) => {
   const [agents, setAgents] = useState<Agent[]>(defaultAgents);
   const [isExpanded, setIsExpanded] = useState(true);
-  const [activeTeam, setActiveTeam] = useState<"research" | "creative">("research");
+  const [activeTeam, setActiveTeam] = useState<"research" | "creative">("creative");
 
   const toggleAgent = (id: string) => {
     const agentToToggle = agents.find(agent => agent.id === id);
